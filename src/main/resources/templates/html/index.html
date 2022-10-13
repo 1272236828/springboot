@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>首页</title>
 </head>
 <body>
-  hello world
+    <form action="upload" method="post" enctype="multipart/form-data">
+        <input type="text" name="description" th:placeholder="FileDescription"/>文件描述<br/>
+        <input type="file" name="file" th:placeholder="File"/><br/>
+        <input type="submit" value="上传文件"/>
+    </form>
 </body>
 </html>
