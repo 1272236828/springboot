@@ -2,11 +2,43 @@ package com.spring.web.entity;
 
 public class UploadFile {
 
-    private int fileID;
+    public int fileID;
 
-    private String fileName;
+    public String fileName;
 
-    private String filePath;
+    public String filePath;
 
-    private String fileSHA256;
+    public String fileSHA256;
+
+    public void setFileID(int fileID) {
+        this.fileID = fileID;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public void setFileSHA256(String fileSHA256) {
+        this.fileSHA256 = fileSHA256;
+    }
+
+    public int getFileID() {
+        return fileID;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public String getFileSHA256() {
+        return fileSHA256;
+    }
 }
