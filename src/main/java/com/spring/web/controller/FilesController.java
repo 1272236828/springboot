@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 
 @Controller
-public class FileUploadController {
+public class FilesController {
     @Autowired
     private SQLUserService sqlUserService;
     // 下载功能的页面
@@ -81,7 +81,16 @@ public class FileUploadController {
                     String path = request.getServletContext().getRealPath("/uploadFiles/");
                     filePath = new File(path + File.separator + fileName);
 
+                    // 排除重名文件
                     uploadFile.setFilePath(path + File.separator + fileName);
+                    if (filePath.exists()) {
+                        filePath = new File(path + File.separator + "download" + fileName);
+                        uploadFile.setFilePath(path + File.separator + "download" + fileName);
+                        uploadFile.setFileName("download" + uploadFile.getFileName());
+                    }
+                    else {
+                        uploadFile.setFilePath(path + File.separator + fileName);
+                    }
                     if (!filePath.getParentFile().exists()) {
                         filePath.getParentFile().mkdirs();
                     }
@@ -127,4 +136,11 @@ public class FileUploadController {
         return builder.body(FileUtils.readFileToByteArray(downloadFile));
     }
 
+    @RequestMapping("delete")
+    public void delete(
+            HttpServletRequest request,
+            @RequestParam("filename") String filename
+    ) throws IOException {
+
+    }
 }
