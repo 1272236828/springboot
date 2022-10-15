@@ -31,63 +31,65 @@ public class FileUploadController {
     // 下载功能的页面
     @RequestMapping("/uploadFile")
     public String fileUploadController() {
-        return "/html/uploadFile";
+        return "uploadFile";
     }
 
     // 实现下载功能
     @RequestMapping("/upload")
     public String upload(HttpServletRequest request,
                          SQLUser sqlUser,
-                         @RequestParam("file") MultipartFile file)
+                         @RequestParam("file") MultipartFile[] files)
             throws IllegalStateException, IOException {
-        // 如果文件不为空则向下处理
-        if (!file.isEmpty()) {
-            // 临时文件夹位置
-            String tempPath = request.getServletContext().getRealPath("/tempUploadFiles/");
-            // 获取文件名字
-            String fileName = file.getOriginalFilename();
-            // 获取临时文件夹地址
-            File filePath = new File(tempPath + File.separator + fileName);
-            //如果临时文件夹不存在则创建一个新的文件夹
-            if (!filePath.getParentFile().exists()) {
-                filePath.getParentFile().mkdirs();
-            }
-
-            // 将上传文件存入临时文件夹
-            file.transferTo(filePath);
-
-            // 构造上传文件对象
-            UploadFile uploadFile = new UploadFile();
-            uploadFile.setFileName(fileName);
-            // 先记录临时文件路径
-            uploadFile.setFilePath(tempPath + File.separator + fileName);
-            uploadFile.setFileSHA256(SHA256Utils.gatSHA256(filePath));
-
-            //获取判断文件是否重复，如果重复返回相应文件的id如果不重复返回0
-            int checkFlag = sqlUserService.checkFileExists(sqlUser, uploadFile);
-
-            // 尝试将已经生成的file文件重新转化成MultiPartFile
-            // 获取输入流
-            InputStream inputStream = new FileInputStream(filePath);
-            file = new MockMultipartFile(filePath.getName(), inputStream);
-
-            // 删除临时文件
-            FileUtils.deleteQuietly(filePath);
-
-            // 如果没有出现过文件
-            if (checkFlag == 0) {
-                // 存入实际文件夹
-                String path = request.getServletContext().getRealPath("/uploadFiles/");
-                filePath = new File(path + File.separator + fileName);
-
-                uploadFile.setFilePath(path + File.separator + fileName);
+        for (MultipartFile file: files) {
+            // 如果文件不为空则向下处理
+            if (!file.isEmpty()) {
+                // 临时文件夹位置
+                String tempPath = request.getServletContext().getRealPath("/tempUploadFiles/");
+                // 获取文件名字
+                String fileName = file.getOriginalFilename();
+                // 获取临时文件夹地址
+                File filePath = new File(tempPath + File.separator + fileName);
+                //如果临时文件夹不存在则创建一个新的文件夹
                 if (!filePath.getParentFile().exists()) {
                     filePath.getParentFile().mkdirs();
                 }
 
+                // 将上传文件存入临时文件夹
                 file.transferTo(filePath);
-                System.out.println(filePath);
-                sqlUserService.addFileToSQL(sqlUser, uploadFile);
+
+                // 构造上传文件对象
+                UploadFile uploadFile = new UploadFile();
+                uploadFile.setFileName(fileName);
+                // 先记录临时文件路径
+                uploadFile.setFilePath(tempPath + File.separator + fileName);
+                uploadFile.setFileSHA256(SHA256Utils.gatSHA256(filePath));
+
+                //获取判断文件是否重复，如果重复返回相应文件的id如果不重复返回0
+                int checkFlag = sqlUserService.checkFileExists(sqlUser, uploadFile);
+
+                // 尝试将已经生成的file文件重新转化成MultiPartFile
+                // 获取输入流
+                InputStream inputStream = new FileInputStream(filePath);
+                file = new MockMultipartFile(filePath.getName(), inputStream);
+
+                // 删除临时文件
+                FileUtils.deleteQuietly(filePath);
+
+                // 如果没有出现过文件
+                if (checkFlag == 0) {
+                    // 存入实际文件夹
+                    String path = request.getServletContext().getRealPath("/uploadFiles/");
+                    filePath = new File(path + File.separator + fileName);
+
+                    uploadFile.setFilePath(path + File.separator + fileName);
+                    if (!filePath.getParentFile().exists()) {
+                        filePath.getParentFile().mkdirs();
+                    }
+
+                    file.transferTo(filePath);
+                    System.out.println(filePath);
+                    sqlUserService.addFileToSQL(sqlUser, uploadFile);
+                }
             }
         }
         return "forward:/showDownload";
@@ -99,7 +101,7 @@ public class FileUploadController {
         File fileDir = new File(path);
         File fileList[] = fileDir.listFiles();
         module.addAttribute("filesList", fileList);
-        return "/html/showFile";
+        return "showFile";
     }
 
     @RequestMapping("/download")
