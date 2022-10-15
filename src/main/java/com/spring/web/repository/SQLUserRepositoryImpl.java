@@ -2,6 +2,7 @@ package com.spring.web.repository;
 
 import com.spring.web.entity.SQLUser;
 import com.spring.web.entity.UploadFile;
+import com.spring.web.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -22,7 +23,14 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
                 "FilePath VARCHAR(255) NOT NULL," +
                 "PRIMARY KEY (FileID)" +
                 ")";
-
+        String UserSQL = "CREATE TABLE IF NOT EXISTS UserList(" +
+                "UserID INT NOT NULL AUTO_INCREMENT," +
+                "UserName VARCHAR(255) NOT NULL," +
+                "password VARCHAR(255) NOT NULL," +
+                "adminAccount INT NOT NULL," +
+                "PRIMARY KEY (UserID)" +
+                ")";
+        jdbcTemplate.execute(UserSQL);
         jdbcTemplate.execute(FileSQL);
         return 0;
     }
@@ -50,5 +58,15 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
             }
         }
         return 0;
+    }
+
+    @Override
+    public void addUserToSQL(SQLUser sqlUser, User user){
+        String sql = "";
+    }
+
+    @Override
+    public  int checkUser(SQLUser sqlUser, User user){
+        return 2;
     }
 }

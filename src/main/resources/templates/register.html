@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Sign in</title>
-  <link rel="stylesheet" type="text/css" href="../css/register.css" />
+    <meta charset="UTF-8">
+    <title>Sign up</title>
+    <link rel="stylesheet" type="text/css" href="css/register.css" />
 </head>
 <body>
-<div id = "login-box">
-  <h1>register</h1>
-  <div class = "input-box">
-    <input type = "text" placeholder = "Username">
-  </div>
-  <div class="input-box">
-    <input type="password" placeholder="Password">
-  </div>
-  <button>确定</button>
-</div>
+<form class = "text-center" action = "register" method="post">
+    <div id = "login-box">
+        <h1>register</h1>
+        <div class = "input-box">
+            <input type = "text" placeholder="username" name = "username">
+        </div>
+        <div class="input-box">
+            <input type="password" placeholder="password" name = "password">
+        </div>
+        <input type="submit"  class="qd" value="确定" />
+    </div>
+</form>
 </body>
 </html>
