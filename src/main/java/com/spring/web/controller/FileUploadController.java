@@ -28,24 +28,22 @@ public class FileUploadController {
     // 实现下载功能
     @RequestMapping("/upload")
     public String upload(HttpServletRequest request,
-                         @RequestParam("description") String description,
                          @RequestParam("file") MultipartFile file)
             throws IllegalStateException, IOException {
-        System.out.println("文件描述："  + description);
         if (!file.isEmpty()) {
             String path = request.getServletContext().getRealPath("/uploadFiles/");
+            System.out.println(path);
             String fileName = file.getOriginalFilename();
             File filePath = new File(path + File.separator + fileName);
             if (!filePath.getParentFile().exists()) {
                 filePath.getParentFile().mkdirs();
             }
             file.transferTo(filePath);
-            System.out.println(filePath);
         }
-        return "forward:/showDownLoad";
+        return "forward:/showDownload";
     }
 
-    @RequestMapping("/showDownLoad")
+    @RequestMapping("/showDownload")
     public String showDownLoad(HttpServletRequest request, Model module) {
         String path = request.getServletContext().getRealPath("/uploadFiles/");
         File fileDir = new File(path);
