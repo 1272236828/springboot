@@ -6,6 +6,7 @@ import com.spring.web.service.SQLUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.StringUtils;
@@ -28,7 +29,8 @@ public class LoginController {
     public String toLogin(@RequestParam("username") String username,
                           @RequestParam("password") String password,
                           SQLUser sqlUser,
-                          HttpServletRequest request){
+                          HttpServletRequest request,
+                          Model model){
         if(!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)) {
             User user = new User();
             user.setUsername(username);
@@ -39,6 +41,7 @@ public class LoginController {
                 return "index";
             }
         }
+        model.addAttribute("status", "登录失败，请重试！");
         return "login";
     }
 }
