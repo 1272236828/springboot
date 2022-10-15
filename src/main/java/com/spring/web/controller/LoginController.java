@@ -42,6 +42,6 @@ public class LoginController {
             }
         }
         model.addAttribute("status", "登录失败，请重试！");
-        return "login";
+        return "/login";
     }
 }

@@ -14,6 +14,7 @@ public class WebApplication {
         if (!uploadFilePath.exists()) {
             uploadFilePath.mkdirs();
         }
+
         SpringApplication.run(WebApplication.class, args);
     }
 
