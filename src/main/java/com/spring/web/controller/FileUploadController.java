@@ -18,11 +18,14 @@ import java.net.URLEncoder;
 
 @Controller
 public class FileUploadController {
-    @RequestMapping("/")
+
+    // 下载功能的页面
+    @RequestMapping("/uploadFile")
     public String fileUploadController() {
-        return "/html/index";
+        return "/html/uploadFile";
     }
 
+    // 实现下载功能
     @RequestMapping("/upload")
     public String upload(HttpServletRequest request,
                          @RequestParam("description") String description,
@@ -57,7 +60,7 @@ public class FileUploadController {
             @RequestParam("filename") String filename,
             @RequestHeader("User-Agent") String userAgent
     ) throws IOException {
-        String path = request.getServletContext().getRealPath("uploadFiles/");
+        String path = request.getServletContext().getRealPath("/uploadFiles/");
         File downloadFile = new File(path + File.separator + filename);
         BodyBuilder builder = ResponseEntity.ok();
         builder.contentLength(downloadFile.length());
@@ -66,7 +69,7 @@ public class FileUploadController {
         if (userAgent.indexOf("MSIE") > 0) {
             builder.header("Content-Disposition", "attachment;filename=" + filename);
         } else {
-            builder.header("Content-Disposition", "attachment; filename=" + filename);
+            builder.header("Content-Disposition", "attachment; filename* = UTF-8''" + filename);
         }
         return builder.body(FileUtils.readFileToByteArray(downloadFile));
     }
