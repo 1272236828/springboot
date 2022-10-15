@@ -2,11 +2,16 @@ package com.spring.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class LoginController {
-    @RequestMapping("login")
-    public String loginController() {
-        return "html/login";
+    @RequestMapping("/login")
+    public String login() {
+        return "login";
+    }
+    @RequestMapping("skip")
+    public String skip(){
+        return  "index";
     }
 }
