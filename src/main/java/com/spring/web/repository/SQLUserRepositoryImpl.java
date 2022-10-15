@@ -2,6 +2,7 @@ package com.spring.web.repository;
 
 import com.spring.web.entity.SQLUser;
 import com.spring.web.entity.UploadFile;
+import com.spring.web.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -56,6 +57,16 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
                 }
             }
         }
+        return 0;
+    }
+
+    @Override
+    public void addUserToSQL(SQLUser sqlUser, User user) {
+
+    }
+
+    @Override
+    public int checkUser(SQLUser sqlUser, User user) {
         return 0;
     }
 }
