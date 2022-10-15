@@ -22,7 +22,14 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
                 "FilePath VARCHAR(255) NOT NULL," +
                 "PRIMARY KEY (FileID)" +
                 ")";
-
+        String UserSQL = "CREATE TABLE IF NOT EXISTS UserList(" +
+                "UserID INT NOT NULL AUTO_INCREMENT," +
+                "UserName VARCHAR(255) NOT NULL," +
+                "password VARCHAR(255) NOT NULL," +
+                "adminAccount INT NOT NULL," +
+                "PRIMARY KEY (UserID)" +
+                ")";
+        jdbcTemplate.execute(UserSQL);
         jdbcTemplate.execute(FileSQL);
         return 0;
     }
