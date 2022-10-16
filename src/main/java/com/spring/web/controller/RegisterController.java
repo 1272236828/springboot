@@ -26,12 +26,15 @@ public class RegisterController {
                              @RequestParam("password") String password,
                              SQLUser sqlUser,
                              HttpServletRequest request) {
+        System.out.println(username + "2");
         if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)) {
             User user = new User();
             user.setUsername(username);
             user.setPassword(password);
             user.setAdminAccount(0);
+            System.out.println(username + "1");
         if (sqlUserService.addUserToSQL(sqlUser, user) == 1) {
+            System.out.println(username);
             return "login";
         }
     }

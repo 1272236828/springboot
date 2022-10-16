@@ -12,7 +12,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handle) throws IOException {
         String uri = request.getRequestURI();
-        if (uri.contains("login") || uri.contains("register")) {
+        if (uri.contains("login") || uri.contains("register") || uri.contains("toRegister") || uri.contains("toLogin")) {
             return true;
         } else {
             if (request.getSession().getAttribute("username") != null) {
