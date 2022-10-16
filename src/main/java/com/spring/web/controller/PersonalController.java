@@ -140,8 +140,8 @@ public class PersonalController {
         UserToFile user = sqlUserService.queryFileList(sqlUser, (String) request.getSession().getAttribute("username"));
         if (!filename.isEmpty()) {
             for (UserToFile userToFile: user.getChildren()) {
-                if(userToFile.getFileName().equals(file)) {
-                    userToFile.setFileName(filename);
+                if(userToFile.getFileName().equals(filename)) {
+                    userToFile.setFileName(file);
                 }
             }
         }

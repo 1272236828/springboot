@@ -123,7 +123,6 @@ public class FilesController {
                 }
 
                 user.addChildren(userToFile);
-                request.getSession().setAttribute("user", backup);
                 sqlUserService.updateFile(sqlUser, backup, username);
             }
         }
