@@ -12,4 +12,6 @@ public interface SQLUserService {
     public int addUserToSQL(SQLUser sqlUser, User user);
     public  int checkUser(SQLUser sqlUser, User user);
     public void updateFile(SQLUser sqlUser, UserToFile uploadFile, String username);
+
+    public UserToFile queryFileList(SQLUser sqlUser, String username);
 }

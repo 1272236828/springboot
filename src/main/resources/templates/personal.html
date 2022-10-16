@@ -12,6 +12,17 @@
               <span> 登陆 </span>
           </div>
       </a>
+      <span th:text="${path}"></span>
+      <table>
+          <tr th:each="file,fileStat:${filesList}">
+              <td>
+                  <span th:text = "${fileStat.count}"></span>
+              </td>
+              <td>
+                  <span th:text="${file.name}"></span>
+              </td>
+          </tr>
+      </table>
   </div>
 </body>
 </html>

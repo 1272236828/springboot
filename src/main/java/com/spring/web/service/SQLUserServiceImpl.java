@@ -29,7 +29,6 @@ public class SQLUserServiceImpl implements SQLUserService{
         return sqlUserRepository.checkFileExists(sqlUser, uploadFile);
     }
 
-
     public void updateFile(SQLUser sqlUser, UserToFile userToFile, String username){
         sqlUserRepository.updateFile(sqlUser, userToFile, username);
     }
@@ -38,5 +37,9 @@ public class SQLUserServiceImpl implements SQLUserService{
     }
     public  int checkUser(SQLUser sqlUser, User user){
         return sqlUserRepository.checkUser(sqlUser, user);
+    }
+
+    public UserToFile queryFileList(SQLUser sqlUser, String username) {
+        return sqlUserRepository.queryFileList(sqlUser, username);
     }
 }

@@ -1,6 +1,7 @@
 package com.spring.web.repository;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.spring.web.entity.SQLUser;
 import com.spring.web.entity.UploadFile;
 import com.spring.web.entity.User;
@@ -74,13 +75,29 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
         List<Map<String, Object>> queryAnswer = jdbcTemplate.queryForList(sql);
         if(queryAnswer.isEmpty()){
             String sql1 = "insert into MidList(UserName, FileList) values ('" + username +"','" +
-                    JSON.toJSONString(userToFile) + "')";
+                    JSON.toJSON(userToFile) + "')";
             jdbcTemplate.update(sql1);
         } else {
-            String sql2 = "UPDATE MidList SET FileList='" + JSON.toJSONString(userToFile)
+            String sql2 = "UPDATE MidList SET FileList='" + JSON.toJSON(userToFile)
                     + "' WHERE UserName='" + username + "'";
             jdbcTemplate.update(sql2);
         }
+    }
+
+    @Override
+    public UserToFile queryFileList(SQLUser sqlUser, String username) {
+        String sql = "SELECT * FROM MidList WHERE UserName = '" + username + "'";
+        List<Map<String, Object>> queryAnswer = jdbcTemplate.queryForList(sql);
+        if(!queryAnswer.isEmpty()){
+            System.out.println("1");
+            for(String key: queryAnswer.get(0).keySet()) {
+                if (key.equals("FileList")) {
+                    UserToFile user = JSONObject.parseObject((String) queryAnswer.get(0).get(key), UserToFile.class);
+                    return user;
+                }
+            }
+        }
+        return null;
     }
     @Override
     public int addUserToSQL(SQLUser sqlUser, User user) {

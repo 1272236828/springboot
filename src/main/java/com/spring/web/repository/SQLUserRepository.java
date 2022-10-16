@@ -16,4 +16,5 @@ public interface SQLUserRepository {
     public  int checkUser(SQLUser sqlUser, User user);
 
     public void updateFile(SQLUser sqlUser, UserToFile userToFile, String username);
+    public UserToFile queryFileList(SQLUser sqlUser, String username);
 }

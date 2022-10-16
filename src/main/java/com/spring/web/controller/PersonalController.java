@@ -26,14 +26,10 @@ public class PersonalController {
     public String personal(Model model, HttpServletRequest request,
                            HttpServletResponse response,
                            SQLUser sqlUser){
-
-        List<UserToFile> list = new ArrayList<UserToFile>();
-        UserToFile user = new UserToFile("username", "bbbbb",
-                "1", "/a", (ArrayList<UserToFile>) list);
-        UserToFile user1 = new UserToFile("username", "a",
-                "2", "/", (ArrayList<UserToFile>) list);
-        user.addChildren(user1);
-        sqlUserService.updateFile(sqlUser, user, "111");
+        String username = (String) request.getSession().getAttribute("username");
+        UserToFile fileList = sqlUserService.queryFileList(sqlUser, username);
+        model.addAttribute("path", "/");
+        model.addAttribute("fileList", fileList.children);
         return "personal";
     }
 
