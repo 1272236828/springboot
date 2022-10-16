@@ -1,18 +1,24 @@
 package com.spring.web.entity;
 
-import lombok.Builder;
 
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.util.ArrayList;
 
-@Builder
 public class UserToFile {
     public String username;
     public String fileName;
     public String fileID;
     public String parentPath;
-    public List<UserToFile> children;
+    public ArrayList<UserToFile> children;
 
+    public UserToFile(String username, String fileName, String fileID,
+                      String parentPath, ArrayList<UserToFile> children) {
+        setUsername(username);
+        setFileName(fileName);
+        setFileID(fileID);
+        setParentPath(parentPath);
+        setChildren(children);
+    }
     public String getUsername() {
         return username;
     }
@@ -45,15 +51,20 @@ public class UserToFile {
         this.parentPath = parentPath;
     }
 
-    public List<UserToFile> getChildren() {
+    public ArrayList<UserToFile> getChildren() {
         return children;
     }
 
-    public void setChildren(List<UserToFile> children) {
+    public void setChildren(ArrayList<UserToFile> children) {
         this.children = children;
     }
 
-    public void addChildren(List<UserToFile> file, String paths, UserToFile list) {
-
+    public void addChildren(UserToFile file) {
+        if (this.parentPath.equals("/")) {
+            file.setParentPath(this.parentPath);
+        } else {
+            file.setParentPath(this.parentPath + File.separator + this.fileName);
+        }
+        this.children.add(file);
     }
 }

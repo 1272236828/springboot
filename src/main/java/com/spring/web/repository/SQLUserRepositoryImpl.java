@@ -1,8 +1,10 @@
 package com.spring.web.repository;
 
+import com.alibaba.fastjson.JSON;
 import com.spring.web.entity.SQLUser;
 import com.spring.web.entity.UploadFile;
 import com.spring.web.entity.User;
+import com.spring.web.entity.UserToFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -33,9 +35,11 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
         String MidSQL = "CREATE TABLE IF NOT EXISTS MidList(" +
                 "ID INT NOT NULL AUTO_INCREMENT," +
                 "UserName VARCHAR(255) NOT NULL," +
-                "";
+                "FileList VARCHAR(255)," +
+                "PRIMARY KEY (ID))";
         jdbcTemplate.execute(UserSQL);
         jdbcTemplate.execute(FileSQL);
+        jdbcTemplate.execute(MidSQL);
         return 0;
     }
     @Override
@@ -64,6 +68,20 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
         return 0;
     }
 
+    @Override
+    public void updateFile(SQLUser sqlUser, UserToFile userToFile, String username) {
+        String sql = "SELECT * FROM MidList WHERE UserName = '" + username + "'";
+        List<Map<String, Object>> queryAnswer = jdbcTemplate.queryForList(sql);
+        if(queryAnswer.isEmpty()){
+            String sql1 = "insert into MidList(UserName, FileList) values ('" + username +"','" +
+                    JSON.toJSONString(userToFile) + "')";
+            jdbcTemplate.update(sql1);
+        } else {
+            String sql2 = "UPDATE MidList SET FileList='" + JSON.toJSONString(userToFile)
+                    + "' WHERE UserName='" + username + "'";
+            jdbcTemplate.update(sql2);
+        }
+    }
     @Override
     public int addUserToSQL(SQLUser sqlUser, User user) {
         String sql = "SELECT * FROM UserList WHERE UserName = '" + user.getUsername() + "'";
