@@ -7,6 +7,7 @@ import com.spring.web.entity.User;
 import com.spring.web.entity.UserToFile;
 
 import java.io.File;
+import java.util.Map;
 
 public interface SQLUserRepository {
     public int test(SQLUser sqlUser);
@@ -17,4 +18,6 @@ public interface SQLUserRepository {
 
     public void updateFile(SQLUser sqlUser, UserToFile userToFile, String username);
     public UserToFile queryFileList(SQLUser sqlUser, String username);
+
+    public UploadFile queryFilePath(SQLUser sqlUser, String fileID);
 }

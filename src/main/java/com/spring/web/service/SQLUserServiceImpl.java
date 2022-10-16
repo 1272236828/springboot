@@ -42,4 +42,7 @@ public class SQLUserServiceImpl implements SQLUserService{
     public UserToFile queryFileList(SQLUser sqlUser, String username) {
         return sqlUserRepository.queryFileList(sqlUser, username);
     }
+    public UploadFile queryFilePath(SQLUser sqlUser, String fileID) {
+        return sqlUserRepository.queryFilePath(sqlUser, fileID);
+    }
 }

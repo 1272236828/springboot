@@ -34,8 +34,8 @@ public class RegisterController {
             user.setPassword(password);
             user.setAdminAccount(0);
         if (sqlUserService.addUserToSQL(sqlUser, user) == 1) {
-            List<UserToFile> list = new ArrayList<UserToFile>();
-            UserToFile userToFile = new UserToFile(username, "",
+            ArrayList<UserToFile> list = new ArrayList<UserToFile>();
+            UserToFile userToFile = new UserToFile(username, "/",
                     "0", "/", (ArrayList<UserToFile>) list);
             sqlUserService.updateFile(sqlUser, userToFile, username);
             return "login";

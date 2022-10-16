@@ -36,7 +36,7 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
         String MidSQL = "CREATE TABLE IF NOT EXISTS MidList(" +
                 "ID INT NOT NULL AUTO_INCREMENT," +
                 "UserName VARCHAR(255) NOT NULL," +
-                "FileList VARCHAR(255)," +
+                "FileList LONGTEXT," +
                 "PRIMARY KEY (ID))";
         jdbcTemplate.execute(UserSQL);
         jdbcTemplate.execute(FileSQL);
@@ -88,13 +88,10 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
     public UserToFile queryFileList(SQLUser sqlUser, String username) {
         String sql = "SELECT * FROM MidList WHERE UserName = '" + username + "'";
         List<Map<String, Object>> queryAnswer = jdbcTemplate.queryForList(sql);
-        System.out.println(queryAnswer);
         if(!queryAnswer.isEmpty()){
             for(String key: queryAnswer.get(0).keySet()) {
                 if (key.equals("FileList")) {
                     UserToFile user = JSONObject.parseObject((String) queryAnswer.get(0).get(key), UserToFile.class);
-                    System.out.println("UserToFile");
-                    System.out.println(user);
                     return user;
                 }
             }
@@ -122,5 +119,26 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
         if(queryAnswer.isEmpty()){
             return 0;
         }return 1;
+    }
+
+    @Override
+    public UploadFile queryFilePath(SQLUser sqlUser, String fileID) {
+        String sql = "SELECT * FROM UploadFiles WHERE fileID = '" + fileID + "'";
+        List<Map<String, Object>> queryAnswer = jdbcTemplate.queryForList(sql);
+        UploadFile uploadFile = new UploadFile();
+        for (String key: queryAnswer.get(0).keySet()) {
+            if (key.equals("FileID")) {
+                uploadFile.setFileID((Integer) queryAnswer.get(0).get(key));
+            }
+            else if (key.equals("FileName")) {
+                uploadFile.setFileName((String) queryAnswer.get(0).get(key));
+            }
+            else if (key.equals("FileSHA256")) {
+                uploadFile.setFileSHA256((String) queryAnswer.get(0).get(key));
+            } else if (key.equals("FilePath")) {
+                uploadFile.setFilePath((String) queryAnswer.get(0).get(key));
+            }
+        }
+        return uploadFile;
     }
 }

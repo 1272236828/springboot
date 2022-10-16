@@ -9,17 +9,30 @@
       <span th:text="${username}"></span>
       <a href="/logout">
           <div>
-              <span> 登陆 </span>
+              <span> 注销 </span>
           </div>
       </a>
       <span th:text="${path}"></span>
+      <a th:href="@{moveToPre(path=${prePath})}" >
+          <span> 返回上级目录 </span>
+      </a>
       <table>
-          <tr th:each="file,fileStat:${filesList}">
+          <tr th:each="file,fileStat:${userList}">
               <td>
-                  <span th:text = "${fileStat.count}"></span>
-              </td>
-              <td>
-                  <span th:text="${file.name}"></span>
+                  <a th:if="${file.fileID gt '0'}" th:href = "@{download(fileID=${file.fileID})}">
+                      <span th:text="${file.fileName}"></span>
+                  </a>
+                  <a th:if="${file.fileID eq '0'}" th:href = "@{moveToNext(fileName=${file.fileName}, path=${file.parentPath})}">
+                      <span th:text="${file.fileName}"></span>
+                  </a>
+                  <a th:href="@{deleteDir(filename=${file.fileName})}">
+                      删除
+                  </a>
+                  <form action="changeDir", method="post">
+                      输入要更改的文件名 <input type="text" name="filename">
+                      <input type="hidden" name="file" th:text="${file.fileName}">
+                      <input type="submit" value="更改">
+                  </form>
               </td>
           </tr>
       </table>
@@ -27,6 +40,9 @@
       <input type="file" name="file" multiple="multiple" th:placeholder="File"/><br/>
       <input type="submit" value="上传"/>
       </form>
+      <a  th:href = "@{createDir}">
+          <span> 新建文件夹</span>
+      </a>
   </div>
 </body>
 </html>

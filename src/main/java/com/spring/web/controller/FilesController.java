@@ -101,20 +101,33 @@ public class FilesController {
                     file.transferTo(filePath);
                     sqlUserService.addFileToSQL(sqlUser, uploadFile);
                 }
+
                 String username = (String) request.getSession().getAttribute("username");
                 String path = (String) request.getSession().getAttribute("path");
                 UserToFile user = (UserToFile) request.getSession().getAttribute("user");
-                System.out.println("111111111111");
                 List<UserToFile> list = new ArrayList<UserToFile>();
                 checkFlag = sqlUserService.checkFileExists(sqlUser, uploadFile);
                 UserToFile userToFile = new UserToFile(username, fileName,
                         String.valueOf(checkFlag), path, (ArrayList<UserToFile>) list);
+
+                UserToFile backup = user;
+                if(!path.equals("/")) {
+                    for (String part: path.split("/")) {
+                        for(UserToFile userToFile1: user.getChildren()) {
+                            if (userToFile1.getFileName().equals(part)) {
+                                user = userToFile1;
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 user.addChildren(userToFile);
-                request.getSession().setAttribute("user", user);
-                sqlUserService.updateFile(sqlUser, user, username);
+                request.getSession().setAttribute("user", backup);
+                sqlUserService.updateFile(sqlUser, backup, username);
             }
         }
-        return "/personal";
+        return "redirect:/personal";
     }
 
     @RequestMapping("/showDownload")
@@ -129,17 +142,19 @@ public class FilesController {
     @RequestMapping("/download")
     public ResponseEntity<byte[]> download(
             HttpServletRequest request,
-            @RequestParam("filename") String filename,
-            @RequestHeader("User-Agent") String userAgent
+            @RequestParam("fileID") String fileID,
+            @RequestHeader("User-Agent") String userAgent,
+            SQLUser sqlUser
     ) throws IOException {
-        String path = request.getServletContext().getRealPath("/uploadFiles/");
-        File downloadFile = new File(path + File.separator + filename);
+        UploadFile file = sqlUserService.queryFilePath(sqlUser, fileID);
+        String path = file.getFilePath();
+        File downloadFile = new File(path);
         BodyBuilder builder = ResponseEntity.ok();
         // 设置传输文件长度
         builder.contentLength(downloadFile.length());
         // 使用二进制流传输
         builder.contentType(MediaType.APPLICATION_OCTET_STREAM);
-        filename = URLEncoder.encode(filename, "UTF-8");
+        String filename = URLEncoder.encode(file.fileName, "UTF-8");
         // 如果是ie浏览器则 如果不是则
         if (userAgent.indexOf("MSIE") > 0) {
             builder.header("Content-Disposition", "attachment;filename=" + filename);

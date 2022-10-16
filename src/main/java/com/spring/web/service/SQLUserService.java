@@ -14,4 +14,5 @@ public interface SQLUserService {
     public void updateFile(SQLUser sqlUser, UserToFile uploadFile, String username);
 
     public UserToFile queryFileList(SQLUser sqlUser, String username);
+    public UploadFile queryFilePath(SQLUser sqlUser, String fileID);
 }
