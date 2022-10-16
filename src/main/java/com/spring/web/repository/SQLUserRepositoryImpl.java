@@ -30,6 +30,10 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
                 "adminAccount INT NOT NULL," +
                 "PRIMARY KEY (UserID)" +
                 ")";
+        String MidSQL = "CREATE TABLE IF NOT EXISTS MidList(" +
+                "ID INT NOT NULL AUTO_INCREMENT," +
+                "UserName VARCHAR(255) NOT NULL," +
+                "";
         jdbcTemplate.execute(UserSQL);
         jdbcTemplate.execute(FileSQL);
         return 0;
@@ -62,10 +66,11 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
 
     @Override
     public int addUserToSQL(SQLUser sqlUser, User user) {
-        String sql = "SELECT * FROM User WHERE Username = '" + user.getUsername() + "'";
+        String sql = "SELECT * FROM UserList WHERE Username = '" + user.getUsername() + "'";
         List<Map<String, Object>> queryAnswer = jdbcTemplate.queryForList(sql);
         if(queryAnswer.isEmpty()){
-            String sql1 ="insert into User(username,password) values (username+password)";
+            String sql1 ="insert into UserList(username, password, adminAccount) values (" + user.getUsername() + ","
+                    + user.getPassword() + "," + user.isAdminAccount() + ")";
             jdbcTemplate.update(sql1);
             return 1;
         }
