@@ -30,6 +30,7 @@ public class PersonalController {
         UserToFile fileList = sqlUserService.queryFileList(sqlUser, username);
         model.addAttribute("path", "/");
         model.addAttribute("fileList", fileList.children);
+        request.getSession().setAttribute("user", fileList);
         return "personal";
     }
 

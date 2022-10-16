@@ -88,11 +88,13 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
     public UserToFile queryFileList(SQLUser sqlUser, String username) {
         String sql = "SELECT * FROM MidList WHERE UserName = '" + username + "'";
         List<Map<String, Object>> queryAnswer = jdbcTemplate.queryForList(sql);
+        System.out.println(queryAnswer);
         if(!queryAnswer.isEmpty()){
-            System.out.println("1");
             for(String key: queryAnswer.get(0).keySet()) {
                 if (key.equals("FileList")) {
                     UserToFile user = JSONObject.parseObject((String) queryAnswer.get(0).get(key), UserToFile.class);
+                    System.out.println("UserToFile");
+                    System.out.println(user);
                     return user;
                 }
             }

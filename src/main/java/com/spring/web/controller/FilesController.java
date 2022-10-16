@@ -2,6 +2,8 @@ package com.spring.web.controller;
 
 import com.spring.web.entity.SQLUser;
 import com.spring.web.entity.UploadFile;
+import com.spring.web.entity.User;
+import com.spring.web.entity.UserToFile;
 import com.spring.web.service.SQLUserService;
 import com.spring.web.util.SHA256Utils;
 import org.apache.commons.io.FileUtils;
@@ -23,6 +25,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class FilesController {
@@ -87,8 +91,7 @@ public class FilesController {
                         filePath = new File(path + File.separator + "download" + fileName);
                         uploadFile.setFilePath(path + File.separator + "download" + fileName);
                         uploadFile.setFileName("download" + uploadFile.getFileName());
-                    }
-                    else {
+                    } else {
                         uploadFile.setFilePath(path + File.separator + fileName);
                     }
                     if (!filePath.getParentFile().exists()) {
@@ -96,12 +99,22 @@ public class FilesController {
                     }
 
                     file.transferTo(filePath);
-                    System.out.println(filePath);
                     sqlUserService.addFileToSQL(sqlUser, uploadFile);
                 }
+                String username = (String) request.getSession().getAttribute("username");
+                String path = (String) request.getSession().getAttribute("path");
+                UserToFile user = (UserToFile) request.getSession().getAttribute("user");
+                System.out.println("111111111111");
+                List<UserToFile> list = new ArrayList<UserToFile>();
+                checkFlag = sqlUserService.checkFileExists(sqlUser, uploadFile);
+                UserToFile userToFile = new UserToFile(username, fileName,
+                        String.valueOf(checkFlag), path, (ArrayList<UserToFile>) list);
+                user.addChildren(userToFile);
+                request.getSession().setAttribute("user", user);
+                sqlUserService.updateFile(sqlUser, user, username);
             }
         }
-        return "forward:/showDownload";
+        return "/personal";
     }
 
     @RequestMapping("/showDownload")
