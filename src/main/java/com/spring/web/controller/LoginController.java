@@ -38,7 +38,7 @@ public class LoginController {
             user.setPassword(password);
             user.setAdminAccount(0);
             if(sqlUserService.checkUser(sqlUser, user) == 1){
-                request.getSession().setAttribute("username", "username");
+                request.getSession().setAttribute("username", username);
                 return "index";
             }
         }
