@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 public class SpringMVCConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        // registry.addInterceptor(new LoginInterceptor());
+        registry.addInterceptor(new LoginInterceptor());
     }
 
 }
