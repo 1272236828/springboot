@@ -28,7 +28,7 @@ public class SQLUserServiceImpl implements SQLUserService{
         return sqlUserRepository.checkFileExists(sqlUser, uploadFile);
     }
     public int addUserToSQL(SQLUser sqlUser, User user){
-        sqlUserRepository.addUserToSQL(sqlUser,user);
+        return sqlUserRepository.addUserToSQL(sqlUser,user);
     }
     public  int checkUser(SQLUser sqlUser, User user){
         return sqlUserRepository.checkUser(sqlUser, user);

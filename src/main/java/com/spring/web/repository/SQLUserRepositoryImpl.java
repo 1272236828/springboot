@@ -62,6 +62,13 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
 
     @Override
     public int addUserToSQL(SQLUser sqlUser, User user) {
+        String sql = "SELECT * FROM User WHERE Username = '" + user.getUsername() + "'";
+        List<Map<String, Object>> queryAnswer = jdbcTemplate.queryForList(sql);
+        if(queryAnswer.isEmpty()){
+            String sql1 ="insert into User(username,password) values (username+password)";
+            jdbcTemplate.update(sql1);
+            return 1;
+        }
         return 0;
     }
 
