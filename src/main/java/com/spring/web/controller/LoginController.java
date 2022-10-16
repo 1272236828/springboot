@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Logger;
 
 @Controller
 public class LoginController {
@@ -43,5 +44,11 @@ public class LoginController {
         }
         model.addAttribute("status", "登录失败，请重试！");
         return "/login";
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        request.removeAttribute("username");
+        return "login";
     }
 }

@@ -61,8 +61,8 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
     }
 
     @Override
-    public void addUserToSQL(SQLUser sqlUser, User user) {
-
+    public int addUserToSQL(SQLUser sqlUser, User user) {
+        return 0;
     }
 
     @Override
