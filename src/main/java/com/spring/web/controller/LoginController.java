@@ -38,8 +38,8 @@ public class LoginController {
             user.setPassword(password);
             user.setAdminAccount(0);
             if(sqlUserService.checkUser(sqlUser, user) == 1){
-                request.getSession().setAttribute("username", "username");
-                return "index";
+                request.getSession().setAttribute("username", username);
+                return "personal";
             }
         }
         model.addAttribute("status", "登录失败，请重试！");
