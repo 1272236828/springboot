@@ -54,8 +54,6 @@ public class UserToFile {
     }
 
     public void addChildren(List<UserToFile> file, String paths, UserToFile list) {
-        for (String path: paths.split("/")) {
-            if (list.getChildren().contains())
-        }
+
     }
 }

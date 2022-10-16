@@ -66,11 +66,11 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
 
     @Override
     public int addUserToSQL(SQLUser sqlUser, User user) {
-        String sql = "SELECT * FROM UserList WHERE Username = '" + user.getUsername() + "'";
+        String sql = "SELECT * FROM UserList WHERE UserName = '" + user.getUsername() + "'";
         List<Map<String, Object>> queryAnswer = jdbcTemplate.queryForList(sql);
         if(queryAnswer.isEmpty()){
-            String sql1 ="insert into UserList(username, password, adminAccount) values (" + user.getUsername() + ","
-                    + user.getPassword() + "," + user.isAdminAccount() + ")";
+            String sql1 ="insert into UserList(UserName, password, adminAccount) values ('"+ user.getUsername() + "','"
+                    + user.getPassword() + "','" + user.isAdminAccount() + "')";
             jdbcTemplate.update(sql1);
             return 1;
         }
@@ -79,6 +79,11 @@ public class SQLUserRepositoryImpl implements SQLUserRepository{
 
     @Override
     public int checkUser(SQLUser sqlUser, User user) {
-        return 0;
+        String sql = "SELECT * FROM UserList WHERE UserName = '" + user.getUsername() +
+                "' AND password='" + user.getPassword() + "'";
+        List<Map<String, Object>> queryAnswer = jdbcTemplate.queryForList(sql);
+        if(queryAnswer.isEmpty()){
+            return 0;
+        }return 1;
     }
 }

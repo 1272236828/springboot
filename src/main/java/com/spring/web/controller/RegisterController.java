@@ -17,10 +17,11 @@ public class RegisterController {
     private SQLUserService sqlUserService;
     @RequestMapping("register")
     public String register() {
+
         return "register";
     }
 
-    @RequestMapping("toRegister")
+    @RequestMapping("/toRegister")
     public String toRegister(@RequestParam("username") String username,
                              @RequestParam("password") String password,
                              SQLUser sqlUser,
@@ -31,7 +32,6 @@ public class RegisterController {
             user.setPassword(password);
             user.setAdminAccount(0);
         if (sqlUserService.addUserToSQL(sqlUser, user) == 1) {
-            request.getSession().setAttribute("username", "username");
             return "login";
         }
     }

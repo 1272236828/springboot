@@ -13,8 +13,6 @@ public class PersonalController {
     @RequestMapping("personal")
     public String personal(Model model, HttpServletRequest request) {
         request.getSession().setAttribute("paths", "/myfile/list");
-        UserToFile user = new UserToFile();
-        user.username = (String) request.getSession().getAttribute("username");
         return "personal";
     }
 
